@@ -11,5 +11,10 @@ public class Main {
         int n2 = teclado.nextInt();
         int soma = n1 + n2;
         System.out.println("sum of " + n1 + " and " + n2 + " = " + soma);
+        if(soma > 10){
+            System.out.println("Numero maior que dez");
+        }else {
+            System.out.println("Numero menor que 10");
+        }
     }
 }
