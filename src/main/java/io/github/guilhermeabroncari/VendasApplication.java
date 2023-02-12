@@ -17,32 +17,12 @@ public class VendasApplication {
     public CommandLineRunner init(@Autowired ClientRepository clientRepository) {
         return args -> {
             System.out.println("Create");
-            clientRepository.persist(new Client("Guilherme"));
-            clientRepository.persist(new Client("Raniere"));
+            clientRepository.save(new Client("Guilherme"));
+            clientRepository.save(new Client("Raniere"));
 
-            System.out.println("Read");
-            List<Client> clientList = clientRepository.findAll();
-            clientList.forEach(System.out::println);
+            var name = clientRepository.existsByName("Guilherme");
+            System.out.println(name);
 
-            System.out.println("Find by name");
-            clientRepository.findByName("Gui").forEach(System.out::println);
-
-            System.out.println("Update");
-            clientList.forEach(client -> {
-                client.setName(client.getName() + " UPDATED");
-                clientRepository.update(client);
-            });
-            clientList.forEach(System.out::println);
-
-            System.out.println("Delete");
-            clientRepository.findAll().forEach(client -> clientRepository.delete(client));
-
-            clientList = clientRepository.findAll();
-            if (clientList.isEmpty()) {
-                System.out.println("No Client found...");
-            } else {
-                clientList.forEach(System.out::println);
-            }
         };
     }
 
