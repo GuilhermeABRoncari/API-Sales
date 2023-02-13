@@ -20,8 +20,8 @@ public class VendasApplication {
             clientRepository.save(new Client("Guilherme"));
             clientRepository.save(new Client("Raniere"));
 
-            var name = clientRepository.existsByName("Guilherme");
-            System.out.println(name);
+            var name = clientRepository.findByNameContaining("Gui");
+            System.out.println(name.toString());
 
         };
     }
