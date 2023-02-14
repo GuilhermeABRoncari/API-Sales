@@ -1,10 +1,13 @@
 package io.github.guilhermeabroncari.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +20,9 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @Column(name = "CPF", length = 11)
+    private String cpf;
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Request> requestList;
 
