@@ -19,15 +19,14 @@ public class ClientController {
     private ClientRepository clientRepository;
 
     @GetMapping
-    public List<Client> findWithParam(Client filter) {
+    public List<Client> findClientWithParam(Client filter) {
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example example = Example.of(filter, matcher);
         return clientRepository.findAll(example);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @Transactional(readOnly = true)
-    public Client getClientById(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public Client getClientById(@PathVariable Long id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
     }
@@ -54,8 +53,8 @@ public class ClientController {
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateClient(@PathVariable Long id, @RequestBody Client client) {
-        clientRepository.findById(id).map(thisClient -> {
-            client.setId(thisClient.getId());
+        clientRepository.findById(id).map(atualClient -> {
+            client.setId(atualClient.getId());
             clientRepository.save(client);
             return client;
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));

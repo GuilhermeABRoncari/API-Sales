@@ -1,17 +1,15 @@
 package io.github.guilhermeabroncari.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "ITEM_REQUEST")
+import java.math.BigDecimal;
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "ITEM_REQUEST")
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,5 +21,5 @@ public class ItemRequest {
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
     @Column
-    private int amount;
+    private BigDecimal amount;
 }
