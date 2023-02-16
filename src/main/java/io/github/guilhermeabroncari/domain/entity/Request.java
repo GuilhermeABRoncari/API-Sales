@@ -1,9 +1,9 @@
 package io.github.guilhermeabroncari.domain.entity;
 
+import io.github.guilhermeabroncari.domain.enums.RequestStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -26,8 +26,11 @@ public class Request {
     private Client client;
     @Column(name = "REQUEST_DATE")
     private LocalDate requestDate;
-    @Column(name = "AMOUNT", precision = 20, scale = 2)
-    private BigDecimal amount;
+    @Column(name = "TOTAL_PRICE", precision = 20, scale = 2)
+    private BigDecimal totalPrice;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private RequestStatus status;
     @OneToMany(mappedBy = "request")
     private List<ItemRequest> itemRequestList;
 
@@ -37,7 +40,7 @@ public class Request {
                 "id=" + id +
                 ", client=" + client +
                 ", requestDate=" + requestDate +
-                ", amount=" + amount +
+                ", total=" + totalPrice +
                 ", itemRequestList=" + itemRequestList +
                 '}';
     }

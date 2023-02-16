@@ -16,7 +16,8 @@ public class RequestDTOInfo {
     private Long code;
     private String cpf;
     private String clientName;
-    private BigDecimal total;
+    private BigDecimal totalPrice;
     private String requestDate;
+    private String status;
     private List<ItemRequestDTOInfo> items;
 }

@@ -1,6 +1,7 @@
 package io.github.guilhermeabroncari.rest.controller;
 
 import io.github.guilhermeabroncari.exceptions.BusinessRuleException;
+import io.github.guilhermeabroncari.exceptions.RequestNotFoundException;
 import io.github.guilhermeabroncari.rest.ApiErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +13,12 @@ public class ApplicationControllerAdvice {
     @ExceptionHandler(BusinessRuleException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiErrors BusinessRuleHandlerException(BusinessRuleException ex) {
-        String errorMessage = ex.getMessage();
-        return new ApiErrors(errorMessage);
+        return new ApiErrors(ex.getMessage());
+    }
+
+    @ExceptionHandler(RequestNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrors RequestNotFundHandlerException(RequestNotFoundException ex) {
+        return new ApiErrors(ex.getMessage());
     }
 }

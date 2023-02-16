@@ -4,11 +4,13 @@ import io.github.guilhermeabroncari.domain.entity.Client;
 import io.github.guilhermeabroncari.domain.entity.ItemRequest;
 import io.github.guilhermeabroncari.domain.entity.Product;
 import io.github.guilhermeabroncari.domain.entity.Request;
+import io.github.guilhermeabroncari.domain.enums.RequestStatus;
 import io.github.guilhermeabroncari.domain.repository.ClientRepository;
 import io.github.guilhermeabroncari.domain.repository.ItemRequestRepository;
 import io.github.guilhermeabroncari.domain.repository.ProductRepository;
 import io.github.guilhermeabroncari.domain.repository.RequestRepository;
 import io.github.guilhermeabroncari.exceptions.BusinessRuleException;
+import io.github.guilhermeabroncari.exceptions.RequestNotFoundException;
 import io.github.guilhermeabroncari.rest.dto.ItemRequestDTO;
 import io.github.guilhermeabroncari.rest.dto.RequestDTO;
 import io.github.guilhermeabroncari.service.RequestService;
@@ -36,9 +38,10 @@ public class RequestServiceImpl implements RequestService {
         Long idClient = dto.getClient_id();
         Client client = clientRepository.findById(idClient).orElseThrow(() -> new BusinessRuleException("Invalid client code." + idClient));
         Request request = new Request();
-        request.setAmount(dto.getTotalPrice());
+        request.setTotalPrice(dto.getTotalPrice());
         request.setRequestDate(LocalDate.now());
         request.setClient(client);
+        request.setStatus(RequestStatus.CONCLUDED);
 
         var itemsRequest = convertItems(request, dto.getItems());
         requestRepository.save(request);
@@ -51,6 +54,15 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public Optional<Request> getCompositeRequest(Long id) {
         return requestRepository.findByIdFetchItems(id);
+    }
+
+    @Override
+    @Transactional
+    public void statusUpdate(Long id, RequestStatus status) {
+        requestRepository.findById(id).map(request -> {
+            request.setStatus(status);
+            return requestRepository.save(request);
+        }).orElseThrow(() -> new RequestNotFoundException());
     }
 
     private List<ItemRequest> convertItems(Request request, List<ItemRequestDTO> items) {

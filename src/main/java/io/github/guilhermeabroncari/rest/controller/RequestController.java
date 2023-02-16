@@ -2,7 +2,9 @@ package io.github.guilhermeabroncari.rest.controller;
 
 import io.github.guilhermeabroncari.domain.entity.ItemRequest;
 import io.github.guilhermeabroncari.domain.entity.Request;
+import io.github.guilhermeabroncari.domain.enums.RequestStatus;
 import io.github.guilhermeabroncari.domain.repository.RequestRepository;
+import io.github.guilhermeabroncari.rest.dto.AttRequestStatusDTO;
 import io.github.guilhermeabroncari.rest.dto.ItemRequestDTOInfo;
 import io.github.guilhermeabroncari.rest.dto.RequestDTO;
 import io.github.guilhermeabroncari.rest.dto.RequestDTOInfo;
@@ -40,13 +42,20 @@ public class RequestController {
         return service.getCompositeRequest(id).map(request -> convertRequest(request)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found."));
     }
 
+    @PatchMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateRequestStatus(@PathVariable Long id, @RequestBody AttRequestStatusDTO dto) {
+        service.statusUpdate(id, RequestStatus.valueOf(dto.getNewStatus()));
+    }
+
     private RequestDTOInfo convertRequest(Request request) {
         return RequestDTOInfo.builder()
                 .code(request.getId())
                 .requestDate(request.getRequestDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
                 .cpf(request.getClient().getCpf())
                 .clientName(request.getClient().getName())
-                .total(request.getAmount())
+                .totalPrice(request.getTotalPrice())
+                .status(request.getStatus().name())
                 .items(convertRequest(request.getItemRequestList()))
                 .build();
     }
@@ -56,10 +65,10 @@ public class RequestController {
             return Collections.emptyList();
         }
         return itemRequests.stream().map(itemRequest -> ItemRequestDTOInfo.builder()
-                .productDescription(itemRequest.getProduct().getDescription())
-                .unitaryValue(itemRequest.getProduct().getPrice())
-                .amount(itemRequest.getAmount())
-                .build())
+                        .productDescription(itemRequest.getProduct().getDescription())
+                        .unitaryValue(itemRequest.getProduct().getPrice())
+                        .amount(itemRequest.getAmount())
+                        .build())
                 .collect(Collectors.toList());
     }
 
