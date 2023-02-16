@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +46,11 @@ public class RequestServiceImpl implements RequestService {
         request.setItemRequestList(itemsRequest);
 
         return request;
+    }
+
+    @Override
+    public Optional<Request> getCompositeRequest(Long id) {
+        return requestRepository.findByIdFetchItems(id);
     }
 
     private List<ItemRequest> convertItems(Request request, List<ItemRequestDTO> items) {

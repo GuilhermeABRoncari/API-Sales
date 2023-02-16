@@ -3,6 +3,7 @@ package io.github.guilhermeabroncari.domain.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -14,10 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "REQUEST")
-@Table(name = "REQUEST")
+@Table(name = "REQUESTS")
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
     @ManyToOne
     @JoinColumn(name = "CLIENT_ID")
