@@ -9,6 +9,7 @@ import io.github.guilhermeabroncari.rest.dto.ItemRequestDTOInfo;
 import io.github.guilhermeabroncari.rest.dto.RequestDTO;
 import io.github.guilhermeabroncari.rest.dto.RequestDTOInfo;
 import io.github.guilhermeabroncari.service.RequestService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -32,7 +33,7 @@ public class RequestController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Long saveRequest(@RequestBody RequestDTO dto) {
+    public Long saveRequest(@RequestBody @Valid RequestDTO dto) {
         Request request = service.save(dto);
         return request.getId();
     }

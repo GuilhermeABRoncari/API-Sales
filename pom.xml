@@ -39,6 +39,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        <!-- Bean Validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
         <!--        &lt;!&ndash; Starter Security &ndash;&gt;-->
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->

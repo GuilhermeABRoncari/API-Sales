@@ -2,6 +2,7 @@ package io.github.guilhermeabroncari.rest.controller;
 
 import io.github.guilhermeabroncari.domain.entity.Product;
 import io.github.guilhermeabroncari.domain.repository.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -24,14 +25,14 @@ public class ProductController {
     @PostMapping
     @Transactional
     @ResponseStatus(CREATED)
-    public Product saveProduct(@RequestBody Product product) {
+    public Product saveProduct(@RequestBody @Valid Product product) {
         return productRepository.save(product);
     }
 
     @PutMapping("/{id}")
     @Transactional
     @ResponseStatus(NO_CONTENT)
-    public void updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public void updateProduct(@PathVariable Long id, @RequestBody @Valid Product product) {
         productRepository.findById(id).map(atualProduct -> {
             product.setId(atualProduct.getId());
             productRepository.save(product);

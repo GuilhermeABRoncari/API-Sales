@@ -2,6 +2,7 @@ package io.github.guilhermeabroncari.rest.controller;
 
 import io.github.guilhermeabroncari.domain.entity.Client;
 import io.github.guilhermeabroncari.domain.repository.ClientRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -34,7 +35,7 @@ public class ClientController {
     @PostMapping
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    public Client saveClient(@RequestBody Client client) {
+    public Client saveClient(@RequestBody @Valid Client client) {
         return clientRepository.save(client);
     }
 
@@ -52,7 +53,7 @@ public class ClientController {
     @PutMapping("/{id}")
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateClient(@PathVariable Long id, @RequestBody Client client) {
+    public void updateClient(@PathVariable Long id, @RequestBody @Valid Client client) {
         clientRepository.findById(id).map(atualClient -> {
             client.setId(atualClient.getId());
             clientRepository.save(client);

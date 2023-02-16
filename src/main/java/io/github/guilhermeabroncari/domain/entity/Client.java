@@ -2,7 +2,11 @@ package io.github.guilhermeabroncari.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
 
@@ -15,8 +19,11 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotEmpty(message = "{Name.field.is.required}")
     private String name;
     @Column(name = "CPF", length = 11)
+    @NotEmpty(message = "{CPF.field.is.required}")
+    @CPF(message = "Provide a valid CPF.")
     private String cpf;
     @JsonIgnore
     @OneToMany(mappedBy = "client")
