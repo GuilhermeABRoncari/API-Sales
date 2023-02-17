@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findByClient(Client client);
 
-    @Query(" SELECT R FROM REQUEST R LEFT JOIN FETCH R.itemRequestList WHERE R.ID = :id ")
+    @Query(" SELECT R FROM REQUEST R LEFT JOIN FETCH R.itemRequestList WHERE R.id = :id ")
     Optional<Request> findByIdFetchItems(@Param("id") Long id);
 }

@@ -9,13 +9,13 @@ import io.github.guilhermeabroncari.rest.dto.ItemRequestDTOInfo;
 import io.github.guilhermeabroncari.rest.dto.RequestDTO;
 import io.github.guilhermeabroncari.rest.dto.RequestDTOInfo;
 import io.github.guilhermeabroncari.service.RequestService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;

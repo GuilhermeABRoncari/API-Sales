@@ -1,11 +1,11 @@
 package io.github.guilhermeabroncari.domain.entity;
 
 import io.github.guilhermeabroncari.domain.enums.RequestStatus;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @Column(name = "ID")
     private Long id;
     @ManyToOne
     @JoinColumn(name = "CLIENT_ID")

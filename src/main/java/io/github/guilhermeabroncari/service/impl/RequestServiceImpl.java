@@ -43,7 +43,7 @@ public class RequestServiceImpl implements RequestService {
         request.setClient(client);
         request.setStatus(RequestStatus.CONCLUDED);
 
-        var itemsRequest = convertItems(request, dto.getItems());
+        List<ItemRequest> itemsRequest = convertItems(request, dto.getItems());
         requestRepository.save(request);
         itemRequestRepository.saveAll(itemsRequest);
         request.setItemRequestList(itemsRequest);
