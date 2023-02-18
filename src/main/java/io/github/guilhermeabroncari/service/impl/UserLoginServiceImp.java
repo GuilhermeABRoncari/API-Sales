@@ -35,7 +35,7 @@ public class UserLoginServiceImp implements UserDetailsService {
         return User.builder()
                 .username(userLogin.getLogin())
                 .password(userLogin.getPassword())
-                .roles()
+                .roles(roles)
                 .build();
     }
 }
