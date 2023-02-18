@@ -1,6 +1,7 @@
 package io.github.guilhermeabroncari.config.security.jwt;
 
 import io.github.guilhermeabroncari.domain.entity.UserLogin;
+import io.github.guilhermeabroncari.domain.repository.UserLoginRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -19,8 +20,13 @@ public class JwtService {
     private String expirationToken;
     @Value("${security.jwt.subscription-key}")
     private String subscriptionKey;
+    private final UserLoginRepository userLoginRepository;
 
-    private String tokenGenerator(UserLogin userLogin) {
+    public JwtService(UserLoginRepository userLoginRepository) {
+        this.userLoginRepository = userLoginRepository;
+    }
+
+    public String tokenGenerator(UserLogin userLogin) {
         long expString = Long.valueOf(expirationToken);
         LocalDateTime dataHourExpiration = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHourExpiration.atZone(ZoneId.systemDefault()).toInstant();

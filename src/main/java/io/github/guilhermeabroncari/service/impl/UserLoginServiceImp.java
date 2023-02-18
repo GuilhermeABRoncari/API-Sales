@@ -2,6 +2,7 @@ package io.github.guilhermeabroncari.service.impl;
 
 import io.github.guilhermeabroncari.domain.entity.UserLogin;
 import io.github.guilhermeabroncari.domain.repository.UserLoginRepository;
+import io.github.guilhermeabroncari.exceptions.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,9 +21,19 @@ public class UserLoginServiceImp implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserLoginRepository userLoginRepository;
+
     @Transactional
-    public UserLogin saveUserLogin(@RequestBody @Valid UserLogin userLogin){
+    public UserLogin saveUserLogin(UserLogin userLogin) {
         return userLoginRepository.save(userLogin);
+    }
+
+    public UserDetails authenticate(UserLogin userLogin) {
+        UserDetails userDetails = loadUserByUsername(userLogin.getLogin());
+        boolean validPassword = passwordEncoder.matches(userLogin.getPassword(), userDetails.getPassword());
+        if (validPassword) {
+            return userDetails;
+        }
+        throw new InvalidPasswordException();
     }
 
     @Override
