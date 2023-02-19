@@ -15,10 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "REQUEST")
-@Table(name = "REQUESTS")
+@Table(name = "REQUEST")
 public class Request {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
     @ManyToOne
@@ -26,7 +26,7 @@ public class Request {
     private Client client;
     @Column(name = "REQUEST_DATE")
     private LocalDate requestDate;
-    @Column(name = "TOTAL_PRICE", precision = 20, scale = 2)
+    @Column(name = "AMOUNT", precision = 20, scale = 2)
     private BigDecimal totalPrice;
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")

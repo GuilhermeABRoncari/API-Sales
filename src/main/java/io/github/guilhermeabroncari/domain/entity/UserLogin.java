@@ -13,10 +13,10 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "USER")
+@Table(name = "USERLOGIN")
 public class UserLogin {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     @NotEmpty(message = "{Invalid.user.name}")

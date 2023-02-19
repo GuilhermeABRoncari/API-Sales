@@ -18,12 +18,12 @@ import java.util.Set;
 @Table(name = "PRODUCT")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
     @NotBlank(message = "{Description.field.is.required}")
     private String description;
-    @Column(name = "PRICE", precision = 20, scale = 2)
+    @Column(name = "UNITARY_VALUE", precision = 20, scale = 2)
     @NotNull(message = "{Price.field.is.required}")
     private BigDecimal price;
     @OneToMany(mappedBy = "product")

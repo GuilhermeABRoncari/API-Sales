@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "ITEM_REQUEST")
 public class ItemRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "REQUEST_ID")
