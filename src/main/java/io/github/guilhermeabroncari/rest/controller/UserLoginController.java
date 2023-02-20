@@ -6,6 +6,10 @@ import io.github.guilhermeabroncari.exceptions.InvalidPasswordException;
 import io.github.guilhermeabroncari.rest.dto.CredentialsDTO;
 import io.github.guilhermeabroncari.rest.dto.TokenDTO;
 import io.github.guilhermeabroncari.service.impl.UserLoginServiceImp;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +23,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Api("API user creation and authentication.")
 public class UserLoginController {
 
     private final UserLoginServiceImp userLoginServiceImp;
@@ -27,12 +32,22 @@ public class UserLoginController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Saves a new user in database.")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Created a new user successfully."),
+            @ApiResponse(code = 400, message = "Validation error.")
+    })
     public UserLogin save(@RequestBody @Valid UserLogin userLogin) {
         userLogin.setPassword(passwordEncoder.encode(userLogin.getPassword()));
         return userLoginServiceImp.saveUserLogin(userLogin);
     }
 
     @PostMapping("/auth")
+    @ApiOperation("User authentication to receive a token.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Authenticated user login."),
+            @ApiResponse(code = 401, message = "Unauthorized credentials.")
+    })
     public TokenDTO authenticate(@RequestBody CredentialsDTO credentialsDTO) {
         try {
             UserLogin userLogin = UserLogin.builder()

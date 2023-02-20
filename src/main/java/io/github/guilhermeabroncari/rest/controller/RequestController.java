@@ -9,6 +9,7 @@ import io.github.guilhermeabroncari.rest.dto.ItemRequestDTOInfo;
 import io.github.guilhermeabroncari.rest.dto.RequestDTO;
 import io.github.guilhermeabroncari.rest.dto.RequestDTOInfo;
 import io.github.guilhermeabroncari.service.RequestService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -25,6 +26,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("api/requests")
+@Api("API Requests")
 public class RequestController {
     @Autowired
     private RequestService service;
@@ -33,19 +35,34 @@ public class RequestController {
 
     @PostMapping
     @ResponseStatus(CREATED)
+    @ApiOperation("Creates an order(request) using clients and products saved in the database.")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Created a new request successfully."),
+            @ApiResponse(code = 400, message = "Validation error.")
+    })
     public Long saveRequest(@RequestBody @Valid RequestDTO dto) {
         Request request = service.save(dto);
         return request.getId();
     }
 
     @GetMapping("{id}")
-    public RequestDTOInfo findRequestById(@PathVariable Long id) {
+    @ApiOperation("Find a request by ID.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Request found."),
+            @ApiResponse(code = 404, message = "Request not found by ID.")
+    })
+    public RequestDTOInfo findRequestById(@PathVariable @ApiParam("Request ID.") Long id) {
         return service.getCompositeRequest(id).map(request -> convertRequest(request)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Request not found."));
     }
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateRequestStatus(@PathVariable Long id, @RequestBody AttRequestStatusDTO dto) {
+    @ApiOperation("Update a Request parameters by ID.")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Not return any content but make the updates of request status in database."),
+            @ApiResponse(code = 404, message = "Request not found in database.")
+    })
+    public void updateRequestStatus(@PathVariable @ApiParam("Request ID.") Long id, @RequestBody AttRequestStatusDTO dto) {
         service.statusUpdate(id, RequestStatus.valueOf(dto.getNewStatus()));
     }
 

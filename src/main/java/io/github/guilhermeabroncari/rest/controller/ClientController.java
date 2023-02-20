@@ -22,6 +22,8 @@ public class ClientController {
     private ClientRepository clientRepository;
 
     @GetMapping
+    @ApiOperation("Make a list of existing customers and filter on your parameters.")
+    @ApiResponse(code = 200, message = "Client found.")
     public List<Client> findClientWithParam(Client filter) {
         ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example example = Example.of(filter, matcher);
@@ -34,7 +36,7 @@ public class ClientController {
             @ApiResponse(code = 200, message = "Client found."),
             @ApiResponse(code = 404, message = "Client not found by ID.")
     })
-    public Client getClientById(@PathVariable @ApiParam("Client id.") Long id) {
+    public Client getClientById(@PathVariable @ApiParam("Client ID.") Long id) {
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found."));
     }
@@ -42,7 +44,7 @@ public class ClientController {
     @PostMapping
     @Transactional
     @ResponseStatus(HttpStatus.CREATED)
-    @ApiOperation("Save a new client in database.")
+    @ApiOperation("Saves a new client in database.")
     @ApiResponses({
             @ApiResponse(code = 201, message = "Created a new client successfully."),
             @ApiResponse(code = 400, message = "Validation error.")
@@ -54,7 +56,12 @@ public class ClientController {
     @DeleteMapping("/{id}")
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteClient(@PathVariable Long id) {
+    @ApiOperation("Delete a client by ID.")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Client deleted by ID."),
+            @ApiResponse(code = 404, message = "Client not found in database.")
+    })
+    public void deleteClient(@PathVariable @ApiParam("Client ID.") Long id) {
         clientRepository.findById(id).map(client -> {
                     clientRepository.delete(client);
                     return client;
@@ -65,7 +72,12 @@ public class ClientController {
     @PutMapping("/{id}")
     @Transactional
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateClient(@PathVariable Long id, @RequestBody @Valid Client client) {
+    @ApiOperation("Update Client parameters by ID.")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Not return any content but make the updates of client in database."),
+            @ApiResponse(code = 404, message = "Client not found in database.")
+    })
+    public void updateClient(@PathVariable @ApiParam("Client ID.") Long id, @RequestBody @Valid Client client) {
         clientRepository.findById(id).map(atualClient -> {
             client.setId(atualClient.getId());
             clientRepository.save(client);
